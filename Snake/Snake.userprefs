@@ -5,9 +5,9 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.Snake PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="App.config">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
-      <File FileName="Program.cs" Line="43" Column="1" />
+      <File FileName="Program.cs" Line="199" Column="5" />
       <File FileName="App.config" Line="6" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>

@@ -4,9 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Threading;
+/* Above are the namespace declaration used in the program.
+This is used so a fully qualified name does not need to be
+specified every time that a method that is contained within 
+is used. */
 
+//The Snake Namespace
 namespace Snake
 {
+	/// <summary>
+	/// Create a structure named Position with public modifier
+	/// </summary>
     struct Position
     {
         public int row;
@@ -18,10 +26,14 @@ namespace Snake
         }
     }
 
+	//Declare class named Program with only one method called Main
     class Program
     {
+		//Defines the Main method
         static void Main(string[] args)
         {
+			/* Define variables of integral type and 
+			 assign value to them */
             byte right = 0;
             byte left = 1;
             byte down = 2;
@@ -30,6 +42,9 @@ namespace Snake
             int foodDissapearTime = 8000;
             int negativePoints = 0;
 
+			/* Create an array of structures named directions
+			and pre-define the positions that follow the 
+			format of the structure named Position*/
             Position[] directions = new Position[]
             {
                 new Position(0, 1), // right
@@ -37,12 +52,13 @@ namespace Snake
                 new Position(1, 0), // down
                 new Position(-1, 0), // up
             };
-            double sleepTime = 100;
+            double sleepTime = 100; //Stores numbers with decimal
             int direction = right;
             Random randomNumbersGenerator = new Random();
             Console.BufferHeight = Console.WindowHeight;
             lastFoodTime = Environment.TickCount;
 
+			//Create a list of Positions and initialize new Position in it
             List<Position> obstacles = new List<Position>()
             {
                 new Position(12, 12),
@@ -55,13 +71,14 @@ namespace Snake
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.SetCursorPosition(obstacle.col, obstacle.row);
-                Console.Write("=");
+                Console.Write("="); //A method to display value, in this case "="
             }
 
+			//Create a Quesue to store elements in FIFO (first-in, first out) style
             Queue<Position> snakeElements = new Queue<Position>();
             for (int i = 0; i <= 5; i++)
             {
-                snakeElements.Enqueue(new Position(0, i));
+                snakeElements.Enqueue(new Position(0, i)); //add item to the list
             }
 
             Position food;
