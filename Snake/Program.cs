@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Threading;
+/* Above are the namespace declaration used in the program.
+This is used so a fully qualified name does not need to be
+specified every time that a method that is contained within 
+is used. */
 
+//The Snake Namespace
 namespace Snake
 {
 	/// <summary>
-	/// Struct named Position.
+	///  Create a structure named Position with public modifier
 	/// </summary>
 	struct Position
 	{
@@ -29,15 +34,10 @@ namespace Snake
 		}
 	}
 
-	/// <summary>
-	/// A class named Program.
-	/// </summary>
+	//Declare class named Program with only one method called Main
 	class Program
 	{
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name="args">The command-line arguments.</param>
+		//Defines the Main method
 		static void Main(string[] args)
 		{
 			///<summary>
@@ -51,9 +51,9 @@ namespace Snake
 			int foodDissapearTime = 8000;
 			int negativePoints = 0;
 
-			///<summary>
-			/// Create an array named directions to store different directions.
-			/// </summary>
+			/* Create an array of structures named directions
+			and pre-define the positions that follow the 
+			format of the structure named Position*/
 			Position[] directions = new Position[]
 			{
 				new Position(0, 1), // right
@@ -61,7 +61,7 @@ namespace Snake
                 new Position(1, 0), // down
                 new Position(-1, 0), // up
             };
-			double sleepTime = 100;
+			double sleepTime = 100; //Stores numbers with decimal
 			int direction = right;
 			Random randomNumbersGenerator = new Random();
 			Console.BufferHeight = Console.WindowHeight;
@@ -86,16 +86,14 @@ namespace Snake
 			{
 				Console.ForegroundColor = ConsoleColor.Cyan;
 				Console.SetCursorPosition(obstacle.col, obstacle.row);
-				Console.Write("=");
+				Console.Write("="); //A method to display value, in this case "="
 			}
 
-			///<summary>
-			/// Set up the initial length of the snake.
-			/// </summary>
+			//Create a Quesue to store elements in FIFO (first-in, first out) style
 			Queue<Position> snakeElements = new Queue<Position>();
 			for (int i = 0; i <= 5; i++)
 			{
-				snakeElements.Enqueue(new Position(0, i));
+				snakeElements.Enqueue(new Position(0, i)); //add item to the list
 			}
 
 			///<summary>
