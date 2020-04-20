@@ -176,14 +176,17 @@ namespace Snake
 				/// </summary>
 				if (snakeElements.Contains(snakeNewHead) || obstacles.Contains(snakeNewHead))
 				{
-					Console.SetCursorPosition(0, 0);
+					Console.SetCursorPosition(55, 8);
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("Game over!");
 					int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
 					//if (userPoints < 0) userPoints = 0;
 					userPoints = Math.Max(userPoints, 0);
+					Console.SetCursorPosition(50, 9);
 					Console.WriteLine("Your points are: {0}", userPoints);
+					Console.SetCursorPosition(45, 10);
 					Console.WriteLine("Press enter to exit the game.");
+					Console.SetCursorPosition(60, 11);
 					string action = Console.ReadLine();
 					if (action == "")
 					{
