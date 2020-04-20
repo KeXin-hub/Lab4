@@ -91,7 +91,7 @@ namespace Snake
 
 			//Create a Quesue to store elements in FIFO (first-in, first out) style
 			Queue<Position> snakeElements = new Queue<Position>();
-			for (int i = 0; i <= 5; i++)
+			for (int i = 0; i <= 3; i++)
 			{
 				snakeElements.Enqueue(new Position(0, i)); //add item to the list
 			}
