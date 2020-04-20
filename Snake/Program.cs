@@ -183,7 +183,12 @@ namespace Snake
 					//if (userPoints < 0) userPoints = 0;
 					userPoints = Math.Max(userPoints, 0);
 					Console.WriteLine("Your points are: {0}", userPoints);
-					return;
+					Console.WriteLine("Press enter to exit the game.");
+					string action = Console.ReadLine();
+					if (action == "")
+					{
+						return;
+					}
 				}
 
 				///<summary>
