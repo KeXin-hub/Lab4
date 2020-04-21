@@ -110,15 +110,7 @@ namespace Snake
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.Write("@");
 
-			///<summary>
-			/// A foreach loop which is used to draw the body of the snake.
-			/// </summary>
-			foreach (Position position in snakeElements)
-			{
-				Console.SetCursorPosition(position.col, position.row);
-				Console.ForegroundColor = ConsoleColor.DarkGray;
-				Console.Write("*");
-			}
+			program.drawSnakeBody(snakeElements);
 
 			///<summary>
 			/// A while loop which allow the user to control the snake by using the keyboard to create input.
@@ -174,14 +166,23 @@ namespace Snake
 				/// </summary>
 				if (snakeElements.Contains(snakeNewHead) || obstacles.Contains(snakeNewHead))
 				{
-					Console.SetCursorPosition(0, 0);
+					program.playGameOverSound();
+					Console.SetCursorPosition(55, 8);
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("Game over!");
 					int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
 					//if (userPoints < 0) userPoints = 0;
 					userPoints = Math.Max(userPoints, 0);
+					Console.SetCursorPosition(50, 9);
 					Console.WriteLine("Your points are: {0}", userPoints);
-					return;
+					Console.SetCursorPosition(45, 10);
+					Console.WriteLine("Press enter to exit the game.");
+					Console.SetCursorPosition(60, 11);
+					string action = Console.ReadLine();
+					if (action == "")
+					{
+						return;
+					}
 				}
 
 				///<summary>
@@ -197,10 +198,7 @@ namespace Snake
 				snakeElements.Enqueue(snakeNewHead);
 				Console.SetCursorPosition(snakeNewHead.col, snakeNewHead.row);
 				Console.ForegroundColor = ConsoleColor.Gray;
-				if (direction == right) Console.Write(">");
-				if (direction == left) Console.Write("<");
-				if (direction == up) Console.Write("^");
-				if (direction == down) Console.Write("v");
+				program.writeDirection(direction, right, left, up, down);
 
 				///<summary>
 				/// Creation of the new food after the snake ate the previous food.
