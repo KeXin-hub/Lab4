@@ -4,7 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Threading;
+using System.Media;
+/* Above are the namespace declaration used in the program.
+This is used so a fully qualified name does not need to be
+specified every time that a method that is contained within 
+is used. */
 
+//The Snake Namespace
 namespace Snake
 {
 	/// <summary>
@@ -29,11 +35,64 @@ namespace Snake
 		}
 	}
 
-	/// <summary>
-	/// A class named Program.
-	/// </summary>
+	//Declare class named Program with only one method called Main
 	class Program
 	{
+		public void playBackgroundSound()
+		{
+			SoundPlayer bgSound = new SoundPlayer("POL-azure-waters-short.wav");
+			bgSound.PlayLooping();
+		}
+
+		public void playGameOverSound()
+		{
+			SoundPlayer bgSound = new SoundPlayer("Death.wav");
+			bgSound.Play();
+		}
+
+		public void placeObstacles(List<Position> obstacles)
+		{
+
+			///<summary>
+			/// Set up and draw the obstacles at random position.
+			/// </summary>
+			foreach (Position obstacle in obstacles)
+			{
+				Console.ForegroundColor = ConsoleColor.Cyan;
+				Console.SetCursorPosition(obstacle.col, obstacle.row);
+				Console.Write("="); //A method to display value, in this case "="
+			}
+		}
+
+		public void addSnakeElements(Queue<Position> snakeElements)
+		{
+			for (int i = 0; i <= 3; i++)
+			{
+				snakeElements.Enqueue(new Position(0, i)); //add item to the list
+			}
+		}
+
+		public void drawSnakeBody(Queue<Position> snakeElements)
+		{
+			///<summary>
+			/// A foreach loop which is used to draw the body of the snake.
+			/// </summary>
+			foreach (Position position in snakeElements)
+			{
+				Console.SetCursorPosition(position.col, position.row);
+				Console.ForegroundColor = ConsoleColor.DarkGray;
+				Console.Write("*");
+			}
+		}
+
+		public void writeDirection(int direction, byte right, byte left, byte up, byte down)
+		{
+			if (direction == right) Console.Write(">");
+			if (direction == left) Console.Write("<");
+			if (direction == up) Console.Write("^");
+			if (direction == down) Console.Write("v");
+		}
+
 		/// <summary>
 		/// The entry point of the program, where the program control starts and ends.
 		/// </summary>
@@ -51,9 +110,9 @@ namespace Snake
 			int foodDissapearTime = 8000;
 			int negativePoints = 0;
 
-			///<summary>
-			/// Create an array named directions to store different directions.
-			/// </summary>
+			/* Create an array of structures named directions
+			and pre-define the positions that follow the 
+			format of the structure named Position*/
 			Position[] directions = new Position[]
 			{
 				new Position(0, 1), // right
@@ -61,7 +120,7 @@ namespace Snake
                 new Position(1, 0), // down
                 new Position(-1, 0), // up
             };
-			double sleepTime = 100;
+			double sleepTime = 100; //Stores numbers with decimal
 			int direction = right;
 			Random randomNumbersGenerator = new Random();
 			Console.BufferHeight = Console.WindowHeight;
@@ -79,24 +138,13 @@ namespace Snake
 				new Position(6, 9),
 			};
 
-			///<summary>
-			/// Set up and draw the obstacles at random position.
-			/// </summary>
-			foreach (Position obstacle in obstacles)
-			{
-				Console.ForegroundColor = ConsoleColor.Cyan;
-				Console.SetCursorPosition(obstacle.col, obstacle.row);
-				Console.Write("=");
-			}
+			Program program = new Program();
+			program.playBackgroundSound();
+			program.placeObstacles(obstacles);
 
-			///<summary>
-			/// Set up the initial length of the snake.
-			/// </summary>
+			//Create a Queue to store elements in FIFO (first-in, first out) style
 			Queue<Position> snakeElements = new Queue<Position>();
-			for (int i = 0; i <= 5; i++)
-			{
-				snakeElements.Enqueue(new Position(0, i));
-			}
+			program.addSnakeElements(snakeElements);
 
 			///<summary>
 			/// Set up and draw the food of the snake at random position.
@@ -112,15 +160,7 @@ namespace Snake
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.Write("@");
 
-			///<summary>
-			/// A foreach loop which is used to draw the body of the snake.
-			/// </summary>
-			foreach (Position position in snakeElements)
-			{
-				Console.SetCursorPosition(position.col, position.row);
-				Console.ForegroundColor = ConsoleColor.DarkGray;
-				Console.Write("*");
-			}
+			program.drawSnakeBody(snakeElements);
 
 			///<summary>
 			/// A while loop which allow the user to control the snake by using the keyboard to create input.
@@ -176,6 +216,7 @@ namespace Snake
 				/// </summary>
 				if (snakeElements.Contains(snakeNewHead) || obstacles.Contains(snakeNewHead))
 				{
+					program.playGameOverSound();
 					Console.SetCursorPosition(55, 8);
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("Game over!");
@@ -207,10 +248,7 @@ namespace Snake
 				snakeElements.Enqueue(snakeNewHead);
 				Console.SetCursorPosition(snakeNewHead.col, snakeNewHead.row);
 				Console.ForegroundColor = ConsoleColor.Gray;
-				if (direction == right) Console.Write(">");
-				if (direction == left) Console.Write("<");
-				if (direction == up) Console.Write("^");
-				if (direction == down) Console.Write("v");
+				program.writeDirection(direction, right, left, up, down);
 
 				///<summary>
 				/// Creation of the new food after the snake ate the previous food.

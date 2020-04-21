@@ -1,0 +1,13 @@
+D:\Lab4\Snake\bin\Debug\Snake.exe.config
+D:\Lab4\Snake\bin\Debug\Snake.exe
+D:\Lab4\Snake\bin\Debug\Snake.pdb
+D:\Lab4\Snake\bin\Debug\mscorlib.dll
+D:\Lab4\Snake\bin\Debug\zh-Hans\mscorlib.resources.dll
+D:\Lab4\Snake\bin\Debug\normidna.nlp
+D:\Lab4\Snake\bin\Debug\normnfc.nlp
+D:\Lab4\Snake\bin\Debug\normnfd.nlp
+D:\Lab4\Snake\bin\Debug\normnfkc.nlp
+D:\Lab4\Snake\bin\Debug\normnfkd.nlp
+D:\Lab4\Snake\obj\Debug\Snake.csprojResolveAssemblyReference.cache
+D:\Lab4\Snake\obj\Debug\Snake.exe
+D:\Lab4\Snake\obj\Debug\Snake.pdb
