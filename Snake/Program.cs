@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using System.Threading;
 using System.Media;
+using System.IO;
 /* Above are the namespace declaration used in the program.
 This is used so a fully qualified name does not need to be
 specified every time that a method that is contained within 
@@ -52,7 +53,6 @@ namespace Snake
 
 		public void placeObstacles(List<Position> obstacles)
 		{
-
 			///<summary>
 			/// Set up and draw the obstacles at random position.
 			/// </summary>
@@ -62,6 +62,13 @@ namespace Snake
 				Console.SetCursorPosition(obstacle.col, obstacle.row);
 				Console.Write("="); //A method to display value, in this case "="
 			}
+		}
+
+		public void drawFood(Position food)
+		{
+			Console.SetCursorPosition(food.col, food.row);
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.Write("@");
 		}
 
 		public void addSnakeElements(Queue<Position> snakeElements)
@@ -91,6 +98,43 @@ namespace Snake
 			if (direction == left) Console.Write("<");
 			if (direction == up) Console.Write("^");
 			if (direction == down) Console.Write("v");
+		}
+
+		public void gameOver(Queue<Position> snakeElements, int negativePoints, int oriUserPoints)
+		{
+			playGameOverSound();
+			Console.SetCursorPosition(55, 8);
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine("Game over!");
+			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
+
+			if (oriUserPoints != userPoints)
+			{
+				oriUserPoints = userPoints;
+			}
+
+			Console.SetCursorPosition(50, 0);
+			Console.Write("Points: " + oriUserPoints);
+
+			addToScoreboard(negativePoints, userPoints);
+
+			//if (userPoints < 0) userPoints = 0;
+			userPoints = Math.Max(userPoints, 0); //Compare userPoints to 0 & return whichever is larger
+			Console.SetCursorPosition(50, 9);
+			Console.WriteLine("Your points are: {0}", userPoints);
+
+			Console.SetCursorPosition(45, 10);
+			Console.WriteLine("Press enter to exit the game.");
+			Console.SetCursorPosition(60, 11);
+		}
+
+		public void addToScoreboard(int negativePoints, int userPoints)
+		{
+			using (StreamWriter writetext = new StreamWriter("score.txt"))
+			{
+				writetext.WriteLine("Points: " + userPoints);
+				writetext.WriteLine("Negative Points: " + negativePoints);
+			}
 		}
 
 		/// <summary>
@@ -140,6 +184,13 @@ namespace Snake
 
 			Program program = new Program();
 			program.playBackgroundSound();
+
+			Console.SetCursorPosition(50, 0);
+			int oriUserPoints = 0;
+			Console.Write("Points: " + oriUserPoints);
+			Console.SetCursorPosition(70, 0);
+			Console.Write("Negative Points: " + negativePoints);
+
 			program.placeObstacles(obstacles);
 
 			//Create a Queue to store elements in FIFO (first-in, first out) style
@@ -156,10 +207,8 @@ namespace Snake
 					randomNumbersGenerator.Next(0, Console.WindowWidth));
 			}
 			while (snakeElements.Contains(food) || obstacles.Contains(food));
-			Console.SetCursorPosition(food.col, food.row);
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.Write("@");
 
+			program.drawFood(food);
 			program.drawSnakeBody(snakeElements);
 
 			///<summary>
@@ -216,18 +265,8 @@ namespace Snake
 				/// </summary>
 				if (snakeElements.Contains(snakeNewHead) || obstacles.Contains(snakeNewHead))
 				{
-					program.playGameOverSound();
-					Console.SetCursorPosition(55, 8);
-					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine("Game over!");
-					int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
-					//if (userPoints < 0) userPoints = 0;
-					userPoints = Math.Max(userPoints, 0);
-					Console.SetCursorPosition(50, 9);
-					Console.WriteLine("Your points are: {0}", userPoints);
-					Console.SetCursorPosition(45, 10);
-					Console.WriteLine("Press enter to exit the game.");
-					Console.SetCursorPosition(60, 11);
+					program.gameOver(snakeElements, negativePoints, oriUserPoints);
+
 					string action = Console.ReadLine();
 					if (action == "")
 					{
@@ -303,6 +342,9 @@ namespace Snake
 				if (Environment.TickCount - lastFoodTime >= foodDissapearTime)
 				{
 					negativePoints = negativePoints + 50;
+					Console.SetCursorPosition(70, 0);
+					Console.Write("Negative Points: " + negativePoints);
+
 					Console.SetCursorPosition(food.col, food.row);
 					Console.Write(" ");
 					do
@@ -314,9 +356,7 @@ namespace Snake
 					lastFoodTime = Environment.TickCount;
 				}
 
-				Console.SetCursorPosition(food.col, food.row);
-				Console.ForegroundColor = ConsoleColor.Yellow;
-				Console.Write("@");
+				program.drawFood(food);
 
 				sleepTime -= 0.01;
 
