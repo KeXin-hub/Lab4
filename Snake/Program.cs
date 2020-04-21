@@ -40,13 +40,13 @@ namespace Snake
 	{
 		public void playBackgroundSound()
 		{
-			SoundPlayer bgSound = new SoundPlayer("POL-azure-waters-short.wav");
+			SoundPlayer bgSound = new SoundPlayer("../../Resources/POL-azure-waters-short.wav");
 			bgSound.PlayLooping();
 		}
 
 		public void playGameOverSound()
 		{
-			SoundPlayer bgSound = new SoundPlayer("Death.wav");
+			SoundPlayer bgSound = new SoundPlayer("../../Resources/Death.wav");
 			bgSound.Play();
 		}
 
