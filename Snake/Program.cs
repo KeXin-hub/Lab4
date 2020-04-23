@@ -100,7 +100,7 @@ namespace Snake
 			if (direction == down) Console.Write("v");
 		}
 
-		public void gameOver(Queue<Position> snakeElements, int negativePoints, int oriUserPoints)
+		public void gameOver(Queue<Position> snakeElements, int negativePoints)
 		{
 			playGameOverSound();
 			Console.SetCursorPosition(55, 8);
@@ -108,15 +108,12 @@ namespace Snake
 			Console.WriteLine("Game over!");
 			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
 
-			if (oriUserPoints != userPoints)
+			using (StreamWriter writetext = new StreamWriter("score.txt"))
 			{
-				oriUserPoints = userPoints;
+				writetext.WriteLine("YOU LOSE!");
+				writetext.WriteLine("Points: " + userPoints);
+				writetext.WriteLine("Negative Points: " + negativePoints);
 			}
-
-			Console.SetCursorPosition(50, 0);
-			Console.Write("Points: " + oriUserPoints);
-
-			addToScoreboard(negativePoints, userPoints);
 
 			//if (userPoints < 0) userPoints = 0;
 			userPoints = Math.Max(userPoints, 0); //Compare userPoints to 0 & return whichever is larger
@@ -128,14 +125,6 @@ namespace Snake
 			Console.SetCursorPosition(60, 11);
 		}
 
-		public void addToScoreboard(int negativePoints, int userPoints)
-		{
-			using (StreamWriter writetext = new StreamWriter("score.txt"))
-			{
-				writetext.WriteLine("Points: " + userPoints);
-				writetext.WriteLine("Negative Points: " + negativePoints);
-			}
-		}
 
 		/// <summary>
 		/// The entry point of the program, where the program control starts and ends.
@@ -168,7 +157,7 @@ namespace Snake
 			int direction = right;
 			Random randomNumbersGenerator = new Random();
 			Console.BufferHeight = Console.WindowHeight;
-			lastFoodTime = Environment.TickCount;
+			lastFoodTime = Environment.TickCount; //Timer
 
 			///<summary>
 			/// Create a list named obstacles to store the position of the obstacles.
@@ -184,10 +173,6 @@ namespace Snake
 
 			Program program = new Program();
 			program.playBackgroundSound();
-
-			Console.SetCursorPosition(50, 0);
-			int oriUserPoints = 0;
-			Console.Write("Points: " + oriUserPoints);
 			Console.SetCursorPosition(70, 0);
 			Console.Write("Negative Points: " + negativePoints);
 
@@ -242,9 +227,7 @@ namespace Snake
 					}
 				}
 
-				///<summary>
-				/// Track the last position of the head of the snake.
-				/// </summary>
+				//snakeHead is the last element of snakeElements
 				Position snakeHead = snakeElements.Last();
 
 				///<summary>
@@ -268,9 +251,9 @@ namespace Snake
 				/// </summary>
 				if (snakeElements.Contains(snakeNewHead) || obstacles.Contains(snakeNewHead))
 				{
-					program.gameOver(snakeElements, negativePoints, oriUserPoints);
+					program.gameOver(snakeElements, negativePoints);
 
-					string action = Console.ReadLine();
+					string action = Console.ReadLine(); //Enter key pressed, exit game
 					if (action == "")
 					{
 						return;
@@ -290,6 +273,7 @@ namespace Snake
 				snakeElements.Enqueue(snakeNewHead);
 				Console.SetCursorPosition(snakeNewHead.col, snakeNewHead.row);
 				Console.ForegroundColor = ConsoleColor.Gray;
+
 				program.writeDirection(direction, right, left, up, down);
 
 				///<summary>
@@ -305,9 +289,7 @@ namespace Snake
 					}
 					while (snakeElements.Contains(food) || obstacles.Contains(food));
 					lastFoodTime = Environment.TickCount;
-					Console.SetCursorPosition(food.col, food.row);
-					Console.ForegroundColor = ConsoleColor.Yellow;
-					Console.Write("@");
+					program.drawFood(food);
 					sleepTime--;
 
 					///<summary>
