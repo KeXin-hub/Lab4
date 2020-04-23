@@ -51,6 +51,12 @@ namespace Snake
 			bgSound.Play();
 		}
 
+		public void playWinSound()
+		{
+			SoundPlayer bgSound = new SoundPlayer("../../Resources/Ta Da.wav");
+			bgSound.Play();
+		}
+
 		public void placeObstacles(List<Position> obstacles)
 		{
 			///<summary>
@@ -125,11 +131,31 @@ namespace Snake
 			Console.SetCursorPosition(60, 11);
 		}
 
+		public void winGame(int negativePoints, int eatenTimes)
+		{
+			if (negativePoints < 300 && eatenTimes == 3)
+			{
+				playWinSound();
+				Console.SetCursorPosition(55, 8);
+				Console.ForegroundColor = ConsoleColor.Blue;
+				Console.WriteLine("You Win!");
+				Console.SetCursorPosition(35, 10);
+				Console.WriteLine("Your Negative Points is less than 300 & Eaten Times is 3");
+				Console.SetCursorPosition(50, 12);
+				Console.WriteLine("Please close the game.");
 
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name="args">The command-line arguments.</param>
+				using (StreamWriter writetext = new StreamWriter("score.txt"))
+				{
+					writetext.WriteLine("YOU WIN!");
+					writetext.WriteLine("Food Eaten Times: " + eatenTimes);
+					writetext.WriteLine("Negative Points: " + negativePoints);
+				}
+
+				Console.ReadLine();
+			}
+		}
+
+		//Defines the Main method
 		static void Main(string[] args)
 		{
 			///<summary>
@@ -142,10 +168,9 @@ namespace Snake
 			int lastFoodTime = 0;
 			int foodDissapearTime = 8000;
 			int negativePoints = 0;
+			int eatenTimes = 0;
 
-			/* Create an array of structures named directions
-			and pre-define the positions that follow the 
-			format of the structure named Position*/
+			/* Create an array of structures named directions and pre-define the positions that follow the format of the structure named Position*/
 			Position[] directions = new Position[]
 			{
 				new Position(0, 1), // right
@@ -178,12 +203,9 @@ namespace Snake
 
 			program.placeObstacles(obstacles);
 
-			//Create a Quesue to store elements in FIFO (first-in, first out) style
+			//Create a Queue to store elements in FIFO (first-in, first out) style
 			Queue<Position> snakeElements = new Queue<Position>();
-			for (int i = 0; i <= 3; i++)
-			{
-				snakeElements.Enqueue(new Position(0, i)); //add item to the list
-			}
+			program.addSnakeElements(snakeElements);
 
 			///<summary>
 			/// Set up and draw the food of the snake at random position.
@@ -281,15 +303,20 @@ namespace Snake
 				/// </summary>
 				if (snakeNewHead.col == food.col && snakeNewHead.row == food.row)
 				{
+					eatenTimes++;
+
 					// feeding the snake
+					//find new position for food
 					do
 					{
 						food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
 							randomNumbersGenerator.Next(0, Console.WindowWidth));
 					}
 					while (snakeElements.Contains(food) || obstacles.Contains(food));
-					lastFoodTime = Environment.TickCount;
+					program.winGame(negativePoints, eatenTimes);
+
 					program.drawFood(food);
+					lastFoodTime = Environment.TickCount;
 					sleepTime--;
 
 					///<summary>
