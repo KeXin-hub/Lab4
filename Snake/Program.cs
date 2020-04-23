@@ -48,7 +48,7 @@ namespace Snake
 			byte down = 2;
 			byte up = 3;
 			int lastFoodTime = 0;
-			int foodDissapearTime = 8000;
+			int foodDissapearTime = 10000;
 			int negativePoints = 0;
 
 			///<summary>
