@@ -129,6 +129,8 @@ namespace Snake
 			Console.SetCursorPosition(45, 10);
 			Console.WriteLine("Press enter to exit the game.");
 			Console.SetCursorPosition(60, 11);
+
+			Console.ReadLine();
 		}
 
 		public void displayScore(Queue<Position> snakeElements, int negativePoints)
@@ -136,10 +138,6 @@ namespace Snake
 			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
 			Console.SetCursorPosition(70, 0);
 			Console.Write("User Points: " + userPoints + "  ");
-		}
-
-				Console.ReadLine();
-			}
 		}
 
 		//Defines the Main method
