@@ -1,3 +1,3 @@
 YOU LOSE!
-Points: -109
-Negative Points: 309
+Points: 100
+Negative Points: 0
