@@ -1,3 +1,5 @@
-YOU LOSE!
-Points: -200
-Negative Points: 0
+YOU WIN!
+Food Eaten Times: 5
+Points: 350
+Negative Points: 50
+Bonus: 100
