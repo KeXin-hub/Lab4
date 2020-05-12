@@ -126,11 +126,75 @@ namespace Snake
 			Console.SetCursorPosition(50, 9);
 			Console.WriteLine("Your points are: {0}", userPoints);
 
-			Console.SetCursorPosition(45, 10);
-			Console.WriteLine("Press enter to exit the game.");
+			Console.SetCursorPosition(43, 11);
+			Console.WriteLine("Press ENTER to display ScoreBoard.");
 			Console.SetCursorPosition(60, 11);
 
 			Console.ReadLine();
+
+			Console.Clear();
+			scoreBoard();
+			Console.WriteLine("Press ENTER to quit game");
+
+			string action = Console.ReadLine(); //Enter key pressed, exit game
+			if (action == "")
+			{
+				Environment.Exit(0);
+			}
+		}
+
+		public void winGame(int negativePoints, int eatenTimes, Queue<Position> snakeElements)
+		{
+			if (negativePoints < 300 && eatenTimes == 3)
+			{
+				playWinSound();
+				Console.SetCursorPosition(55, 8);
+				Console.ForegroundColor = ConsoleColor.Blue;
+				Console.WriteLine("You Win!");
+				Console.SetCursorPosition(35, 10);
+				Console.WriteLine("Your Negative Points is less than 300 & Eaten Times is 3");
+				Console.SetCursorPosition(50, 12);
+				Console.WriteLine("Press ENTER to display ScoreBoard.");
+				int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
+
+				using (StreamWriter writetext = new StreamWriter("score.txt"))
+				{
+					writetext.WriteLine("YOU WIN!");
+					writetext.WriteLine("Food Eaten Times: " + eatenTimes);
+					writetext.WriteLine("Points: " + userPoints);
+					writetext.WriteLine("Negative Points: " + negativePoints);
+				}
+
+				Console.ReadLine();
+
+				Console.Clear();
+				scoreBoard();
+				Console.WriteLine("Press ENTER to quit game");
+
+				string action = Console.ReadLine(); //Enter key pressed, exit game
+				if (action == "")
+				{
+					Environment.Exit(0);
+				}
+
+			}
+		}
+
+		public void scoreBoard()
+		{
+			Console.Clear();
+			Console.SetCursorPosition(0, 1);
+			Console.WriteLine("SCOREBOARD");
+			Console.WriteLine("-----------------------------");
+			using (StreamReader score = new StreamReader("score.txt"))
+			{
+				string line;
+				while ((line = score.ReadLine()) != null)
+				{
+					Console.WriteLine(line);
+				}
+			}
+			Console.WriteLine("-----------------------------");
 		}
 
 		public void displayScore(Queue<Position> snakeElements, int negativePoints)
@@ -298,7 +362,7 @@ namespace Snake
 							randomNumbersGenerator.Next(0, Console.WindowWidth));
 					}
 					while (snakeElements.Contains(food) || obstacles.Contains(food));
-					program.winGame(negativePoints, eatenTimes);
+					program.winGame(negativePoints, eatenTimes, snakeElements);
 
 					program.drawFood(food);
 					lastFoodTime = Environment.TickCount;
