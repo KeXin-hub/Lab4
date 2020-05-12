@@ -39,6 +39,29 @@ namespace Snake
 	//Declare class named Program with only one method called Main
 	class Program
 	{
+		public void helpMenu()
+		{
+			Console.SetCursorPosition(56, 7);
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.WriteLine("Help Menu");
+			Console.SetCursorPosition(55, 8);
+			Console.WriteLine("Instruction:");
+			Console.SetCursorPosition(25, 9);
+			Console.WriteLine("1.Press the arrow key on the keyboard to control the direction of the snake.");
+			Console.SetCursorPosition(25, 10);
+			Console.WriteLine("2.Eat the food to increase your score.");
+			Console.SetCursorPosition(25, 11);
+			Console.WriteLine("3.Prevent the snake from hitting the obsatcles or its body.");
+			Console.SetCursorPosition(45, 12);
+			Console.WriteLine("Press enter to start the game.");
+			string startGame = Console.ReadLine();
+			if (startGame == "")
+			{
+				Console.Clear();
+				return;
+			}
+		}
+
 		public void playBackgroundSound()
 		{
 			SoundPlayer bgSound = new SoundPlayer("../../Resources/POL-azure-waters-short.wav");
@@ -246,6 +269,7 @@ namespace Snake
 			};
 
 			Program program = new Program();
+			program.helpMenu();
 			program.playBackgroundSound();
 
 			program.placeObstacles(obstacles);
