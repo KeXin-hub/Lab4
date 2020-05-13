@@ -1,5 +1,5 @@
 YOU WIN!
+Game Level: 5
 Food Eaten Times: 5
-Points: 350
-Negative Points: 50
-Bonus: 100
+Points: 150
+Negative Points: 150
