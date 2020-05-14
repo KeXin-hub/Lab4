@@ -41,18 +41,12 @@ namespace Snake
 	{
 		public void helpMenu()
 		{
-			Console.SetCursorPosition(56, 7);
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine("Help Menu");
-			Console.SetCursorPosition(55, 8);
 			Console.WriteLine("Instruction:");
-			Console.SetCursorPosition(25, 9);
 			Console.WriteLine("1.Press the arrow key on the keyboard to control the direction of the snake.");
-			Console.SetCursorPosition(25, 10);
 			Console.WriteLine("2.Eat the food to increase your score.");
-			Console.SetCursorPosition(25, 11);
 			Console.WriteLine("3.Prevent the snake from hitting the obsatcles or its body.");
-			Console.SetCursorPosition(45, 12);
 			Console.WriteLine("Press enter to start the game.");
 			string startGame = Console.ReadLine();
 			if (startGame == "")
@@ -156,7 +150,7 @@ namespace Snake
 			}
 
 			//if (userPoints < 0) userPoints = 0;
-			userPoints = Math.Max(userPoints, 0); //Compare userPoints to 0 & return whichever is larger
+			//userPoints = Math.Max(userPoints, 0); //Compare userPoints to 0 & return whichever is larger
 			Console.SetCursorPosition(50, 9);
 			Console.WriteLine("Your points are: {0}", userPoints);
 
@@ -229,7 +223,7 @@ namespace Snake
 		public void displayScore(Queue<Position> snakeElements, int negativePoints, int bonus)
 		{
 			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
-			Console.SetCursorPosition(70, 0);
+			Console.SetCursorPosition(5, 0);
 			Console.Write("User Points: " + userPoints + "  ");
 		}
 
