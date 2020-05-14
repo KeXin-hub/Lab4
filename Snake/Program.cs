@@ -40,6 +40,17 @@ namespace Snake
 	//Declare class named Program with only one method called Main
 	class Program
 	{
+<<<<<<< HEAD
+=======
+		public void helpMenu()
+		{
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.WriteLine("Help Menu");
+			Console.WriteLine("Instruction:");
+			Console.WriteLine("1.Press the arrow key on the keyboard to control the direction of the snake.");
+			Console.WriteLine("2.Eat the food to increase your score.");
+			Console.WriteLine("3.Prevent the snake from hitting the obsatcles or its body.");
+>>>>>>> add-correction
 			Console.WriteLine("Press enter to start the game.");
 			string startGame = Console.ReadLine();
 		public void playBackgroundSound()
@@ -126,7 +137,7 @@ namespace Snake
 			}
 
 			//if (userPoints < 0) userPoints = 0;
-			userPoints = Math.Max(userPoints, 0); //Compare userPoints to 0 & return whichever is larger
+			//userPoints = Math.Max(userPoints, 0); //Compare userPoints to 0 & return whichever is larger
 			Console.SetCursorPosition(50, 9);
 			Console.WriteLine("Your points are: {0}", userPoints);
 
@@ -210,8 +221,13 @@ namespace Snake
 
 		public void displayScore(Queue<Position> snakeElements, int negativePoints)
 		{
+<<<<<<< HEAD
 			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
 			Console.SetCursorPosition(70, 0);
+=======
+			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
+			Console.SetCursorPosition(5, 0);
+>>>>>>> add-correction
 			Console.Write("User Points: " + userPoints + "  ");
 		}
 
