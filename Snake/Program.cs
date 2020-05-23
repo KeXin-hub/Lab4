@@ -40,8 +40,8 @@ namespace Snake
 	//Declare class named Program with only one method called Main
 	class Program
 	{
-<<<<<<< HEAD
-=======
+		//<<<<<<< HEAD
+		//=======
 		public void helpMenu()
 		{
 			Console.ForegroundColor = ConsoleColor.White;
@@ -50,9 +50,11 @@ namespace Snake
 			Console.WriteLine("1.Press the arrow key on the keyboard to control the direction of the snake.");
 			Console.WriteLine("2.Eat the food to increase your score.");
 			Console.WriteLine("3.Prevent the snake from hitting the obsatcles or its body.");
->>>>>>> add-correction
+			//>>>>>>> add-correction
 			Console.WriteLine("Press enter to start the game.");
 			string startGame = Console.ReadLine();
+			Console.Clear();
+		}
 		public void playBackgroundSound()
 		{
 			SoundPlayer bgSound = new SoundPlayer("../../Resources/POL-azure-waters-short.wav");
@@ -91,11 +93,21 @@ namespace Snake
 			Console.Write("@");
 		}
 
+		public void drawSpecialFood(Position bonusfood, Random randomNumbersGenerator, int eatenTimes)
+		{
+			if (eatenTimes == 2)
+			{
+				Console.SetCursorPosition(bonusfood.col, bonusfood.row);
+				Console.ForegroundColor = ConsoleColor.Magenta;
+				Console.Write("%");
+			}
+		}
+
 		public void addSnakeElements(Queue<Position> snakeElements)
 		{
 			for (int i = 0; i <= 3; i++)
 			{
-				snakeElements.Enqueue(new Position(0, i)); //add item to the list
+				snakeElements.Enqueue(new Position(4, i)); //add item to the list
 			}
 		}
 
@@ -120,13 +132,13 @@ namespace Snake
 			if (direction == down) Console.Write("v");
 		}
 
-		public void gameOver(Queue<Position> snakeElements, int negativePoints, int lvlNum, int foodDissapearTime, int eatenTimes)
+		public void gameOver(Queue<Position> snakeElements, int negativePoints, int lvlNum, int foodDissapearTime, int eatenTimes, int bonus)
 		{
 			playGameOverSound();
 			Console.SetCursorPosition(55, 8);
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine("Game over!");
-			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
+			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
 
 			using (StreamWriter writetext = new StreamWriter("score.txt"))
 			{
@@ -134,6 +146,7 @@ namespace Snake
 				writetext.WriteLine("Game Level: " + lvlNum);
 				writetext.WriteLine("Points: " + userPoints);
 				writetext.WriteLine("Negative Points: " + negativePoints);
+				writetext.WriteLine("Bonus: " + bonus);
 			}
 
 			//if (userPoints < 0) userPoints = 0;
@@ -164,7 +177,7 @@ namespace Snake
 			}
 		}
 
-		public void winGame(int negativePoints, int eatenTimes, int lvlNum, Queue<Position> snakeElements)
+		public void winGame(int negativePoints, int eatenTimes, int lvlNum, Queue<Position> snakeElements, int bonus)
 		{
 			if (eatenTimes == 5)
 			{
@@ -176,7 +189,7 @@ namespace Snake
 				Console.WriteLine("Congratulation! You've reached Level 5 & food eaten time is 5");
 				Console.SetCursorPosition(50, 12);
 				Console.WriteLine("Press ENTER to display ScoreBoard.");
-				int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
+				int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
 
 				using (StreamWriter writetext = new StreamWriter("score.txt"))
 				{
@@ -185,6 +198,7 @@ namespace Snake
 					writetext.WriteLine("Food Eaten Times: " + eatenTimes);
 					writetext.WriteLine("Points: " + userPoints);
 					writetext.WriteLine("Negative Points: " + negativePoints);
+					writetext.WriteLine("Bonus: " + bonus);
 				}
 
 				Console.ReadLine();
@@ -219,15 +233,15 @@ namespace Snake
 			Console.WriteLine("-----------------------------");
 		}
 
-		public void displayScore(Queue<Position> snakeElements, int negativePoints)
+		public void displayScore(Queue<Position> snakeElements, int negativePoints, int bonus)
 		{
-<<<<<<< HEAD
-			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
-			Console.SetCursorPosition(70, 0);
-=======
+//<<<<<<< HEAD
+			//int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
+			//Console.SetCursorPosition(70, 0);
+//=======
 			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
 			Console.SetCursorPosition(5, 0);
->>>>>>> add-correction
+//>>>>>>> add-correction
 			Console.Write("User Points: " + userPoints + "  ");
 		}
 
@@ -236,6 +250,16 @@ namespace Snake
 			Console.SetCursorPosition(50, 0);
 			string lvl = "Level " + lvlNum;
 			Console.Write(lvl);
+		}
+	
+		public void createBoundary()
+		{
+			int width = Console.BufferWidth;
+			Console.SetCursorPosition(0, 2);
+			for (int i = 1; i <= width; i++)
+			{
+				Console.Write("-");
+			}
 		}
 
 		//Defines the Main method
@@ -253,6 +277,7 @@ namespace Snake
 			int negativePoints = 0;
 			int eatenTimes = 0;
 			int lvlNum = 1;
+			int bonus = 0;
 
 			/* Create an array of structures named directions and pre-define the positions that follow the format of the structure named Position*/
 			Position[] directions = new Position[]
@@ -281,6 +306,7 @@ namespace Snake
 			};
 
 			Program program = new Program();
+			program.helpMenu();
 			program.playBackgroundSound();
 
 			program.placeObstacles(obstacles);
@@ -291,7 +317,7 @@ namespace Snake
 			program.addSnakeElements(snakeElements);
 
 			program.displayLevel(lvlNum);
-			program.displayScore(snakeElements, negativePoints);
+			program.displayScore(snakeElements, negativePoints,bonus);
 
 			///<summary>
 			/// Set up and draw the food of the snake at random position.
@@ -300,11 +326,20 @@ namespace Snake
 			do
 			{
 				food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
-					randomNumbersGenerator.Next(0, Console.WindowWidth));
+									randomNumbersGenerator.Next(4, Console.WindowWidth));
 			}
 			while (snakeElements.Contains(food) || obstacles.Contains(food));
 
+			Position bonusfood;
+			do
+			{
+				bonusfood = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+					randomNumbersGenerator.Next(4, Console.WindowWidth));
+			}
+			while (snakeElements.Contains(bonusfood) || obstacles.Contains(bonusfood));
+
 			program.drawFood(food);
+			program.drawSpecialFood(bonusfood, randomNumbersGenerator, eatenTimes);
 			program.drawSnakeBody(snakeElements);
 
 			///<summary>
@@ -354,12 +389,71 @@ namespace Snake
 				if (snakeNewHead.row >= Console.WindowHeight) snakeNewHead.row = 0;
 				if (snakeNewHead.col >= Console.WindowWidth) snakeNewHead.col = 0;
 
+				program.createBoundary();
+				if ((snakeHead.row == 4) || (snakeNewHead.row == 4))
+				{
+					if (Console.KeyAvailable)
+					{
+						ConsoleKeyInfo userInput = Console.ReadKey();
+
+						do
+						{
+							if (Console.KeyAvailable == false) { }
+
+							userInput = Console.ReadKey(true);
+							if (userInput.Key == ConsoleKey.LeftArrow)
+							{
+								if (direction != right) direction = left;
+							}
+							if (userInput.Key == ConsoleKey.RightArrow)
+							{
+								if (direction != left) direction = right;
+							}
+							if (userInput.Key == ConsoleKey.UpArrow)
+							{
+								if (direction != down) direction = up;
+							}
+							if (userInput.Key == ConsoleKey.DownArrow)
+							{
+								if (direction != up) direction = down;
+							}
+						} while (userInput.Key != ConsoleKey.LeftArrow && userInput.Key != ConsoleKey.RightArrow && userInput.Key != ConsoleKey.UpArrow && userInput.Key != ConsoleKey.DownArrow);
+
+					}
+					else { }
+				}
+				else {
+					if (Console.KeyAvailable)
+					{
+						ConsoleKeyInfo userInput = Console.ReadKey();
+
+						do
+						{
+							if (Console.KeyAvailable == false) { }
+
+							userInput = Console.ReadKey(true);
+							if (userInput.Key == ConsoleKey.LeftArrow)
+							{
+								if (direction != right) direction = left;
+							}
+							if (userInput.Key == ConsoleKey.RightArrow)
+							{
+								if (direction != left) direction = right;
+							}
+							if (userInput.Key == ConsoleKey.DownArrow)
+							{
+								if (direction != up) direction = down;
+							}
+						} while (userInput.Key != ConsoleKey.LeftArrow && userInput.Key != ConsoleKey.RightArrow && userInput.Key != ConsoleKey.DownArrow);
+
+					}
+				}
 				///<summary>
 				/// End the game and print the score(s) of the user when the snake hit the obstacles.
 				/// </summary>
-				if (snakeElements.Contains(snakeNewHead) || obstacles.Contains(snakeNewHead))
+				if (snakeElements.Contains(snakeNewHead) || obstacles.Contains(snakeNewHead) || (snakeHead.row < 2) || (snakeNewHead.row < 2) || (snakeHead.row == Console.WindowHeight) || (snakeNewHead.row == Console.WindowHeight))
 				{
-					program.gameOver(snakeElements, negativePoints, lvlNum, foodDissapearTime, eatenTimes);
+					program.gameOver(snakeElements, negativePoints, lvlNum, foodDissapearTime, eatenTimes, bonus);
 
 					string action = Console.ReadLine(); //Enter key pressed, exit game
 					if (action == "")
@@ -380,7 +474,7 @@ namespace Snake
 				/// </summary>
 				snakeElements.Enqueue(snakeNewHead);
 				program.displayLevel(lvlNum);
-				program.displayScore(snakeElements, negativePoints);
+				program.displayScore(snakeElements, negativePoints,bonus);
 
 				Console.SetCursorPosition(snakeNewHead.col, snakeNewHead.row);
 				Console.ForegroundColor = ConsoleColor.Gray;
@@ -426,13 +520,14 @@ namespace Snake
 					do
 					{
 						food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
-							randomNumbersGenerator.Next(0, Console.WindowWidth));
+							randomNumbersGenerator.Next(4, Console.WindowWidth));
 					}
 					while (snakeElements.Contains(food) || obstacles.Contains(food));
 
-					program.winGame(negativePoints, eatenTimes, lvlNum, snakeElements);
+					program.winGame(negativePoints, eatenTimes, lvlNum, snakeElements, bonus);
 
 					program.drawFood(food);
+					program.drawSpecialFood(bonusfood, randomNumbersGenerator, eatenTimes);
 					lastFoodTime = Environment.TickCount;
 					sleepTime--;
 
@@ -443,7 +538,38 @@ namespace Snake
 					do
 					{
 						obstacle = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
-							randomNumbersGenerator.Next(0, Console.WindowWidth));
+							randomNumbersGenerator.Next(4, Console.WindowWidth));
+					}
+
+					///<summary>
+					/// Draw the obstacle on the game screen in random position.
+					/// </summary>
+					while (snakeElements.Contains(obstacle) ||
+						obstacles.Contains(obstacle) ||
+						(food.row != obstacle.row && food.col != obstacle.row));
+					obstacles.Add(obstacle);
+					Console.SetCursorPosition(obstacle.col, obstacle.row);
+					Console.ForegroundColor = ConsoleColor.Cyan;
+					Console.Write("=");
+				}
+				else if (snakeNewHead.col == bonusfood.col && snakeNewHead.row == bonusfood.row)
+				{
+					eatenTimes++;
+					bonus += 100;
+
+					//program.winGame(negativePoints, eatenTimes, snakeElements, bonus);
+
+					lastFoodTime = Environment.TickCount;
+					sleepTime--;
+
+					///<summary>
+					/// Create new obstacle in new position.
+					/// </summary>
+					Position obstacle = new Position();
+					do
+					{
+						obstacle = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+							randomNumbersGenerator.Next(4, Console.WindowWidth));
 					}
 
 					///<summary>
@@ -463,7 +589,7 @@ namespace Snake
 					Position last = snakeElements.Dequeue();
 					Console.SetCursorPosition(last.col, last.row);
 					Console.Write(" ");
-					program.displayScore(snakeElements, negativePoints);
+					program.displayScore(snakeElements, negativePoints,bonus);
 				}
 
 				///<summary>
@@ -475,7 +601,7 @@ namespace Snake
 
 					if (negativePoints >= 200)
 					{
-						program.gameOver(snakeElements, negativePoints, lvlNum, foodDissapearTime, eatenTimes);
+						program.gameOver(snakeElements, negativePoints, lvlNum, foodDissapearTime, eatenTimes, bonus);
 					}
 
 					Console.SetCursorPosition(food.col, food.row);
@@ -483,7 +609,7 @@ namespace Snake
 					do
 					{
 						food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
-							randomNumbersGenerator.Next(0, Console.WindowWidth));
+							randomNumbersGenerator.Next(4, Console.WindowWidth));
 					}
 					while (snakeElements.Contains(food) || obstacles.Contains(food));
 					lastFoodTime = Environment.TickCount;
