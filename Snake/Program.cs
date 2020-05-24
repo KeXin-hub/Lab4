@@ -6,7 +6,6 @@ using System.Collections;
 using System.Threading;
 using System.Media;
 using System.IO;
-//using System.Diagnostics;
 /* Above are the namespace declaration used in the program.
 This is used so a fully qualified name does not need to be
 specified every time that a method that is contained within 
@@ -40,8 +39,6 @@ namespace Snake
 	//Declare class named Program with only one method called Main
 	class Program
 	{
-		//<<<<<<< HEAD
-		//=======
 		public void helpMenu()
 		{
 			Console.ForegroundColor = ConsoleColor.White;
@@ -50,7 +47,6 @@ namespace Snake
 			Console.WriteLine("1.Press the arrow key on the keyboard to control the direction of the snake.");
 			Console.WriteLine("2.Eat the food to increase your score.");
 			Console.WriteLine("3.Prevent the snake from hitting the obsatcles or its body.");
-			//>>>>>>> add-correction
 			Console.WriteLine("Press enter to start the game.");
 			string startGame = Console.ReadLine();
 			Console.Clear();
@@ -82,7 +78,7 @@ namespace Snake
 			{
 				Console.ForegroundColor = ConsoleColor.Cyan;
 				Console.SetCursorPosition(obstacle.col, obstacle.row);
-				Console.Write("="); //A method to display value, in this case "="
+				Console.Write("▒");
 			}
 		}
 
@@ -90,7 +86,8 @@ namespace Snake
 		{
 			Console.SetCursorPosition(food.col, food.row);
 			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.Write("@");
+			Console.OutputEncoding = System.Text.Encoding.UTF8;
+			Console.Write("♥♥");
 		}
 
 		public void drawSpecialFood(Position bonusfood, Random randomNumbersGenerator, int eatenTimes)
@@ -235,13 +232,8 @@ namespace Snake
 
 		public void displayScore(Queue<Position> snakeElements, int negativePoints, int bonus)
 		{
-//<<<<<<< HEAD
-			//int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
-			//Console.SetCursorPosition(70, 0);
-//=======
 			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
 			Console.SetCursorPosition(5, 0);
-//>>>>>>> add-correction
 			Console.Write("User Points: " + userPoints + "  ");
 		}
 
@@ -313,7 +305,6 @@ namespace Snake
 
 			//Create a Queue to store elements in FIFO (first-in, first out) style
 			Queue<Position> snakeElements = new Queue<Position>();
-			//int userPoints = (snakeElements.Count - 6) * 100 - negativePoints;
 			program.addSnakeElements(snakeElements);
 
 			program.displayLevel(lvlNum);
@@ -349,26 +340,26 @@ namespace Snake
 			{
 				//negativePoints++;
 
-				if (Console.KeyAvailable)
-				{
-					ConsoleKeyInfo userInput = Console.ReadKey();
-					if (userInput.Key == ConsoleKey.LeftArrow)
-					{
-						if (direction != right) direction = left;
-					}
-					if (userInput.Key == ConsoleKey.RightArrow)
-					{
-						if (direction != left) direction = right;
-					}
-					if (userInput.Key == ConsoleKey.UpArrow)
-					{
-						if (direction != down) direction = up;
-					}
-					if (userInput.Key == ConsoleKey.DownArrow)
-					{
-						if (direction != up) direction = down;
-					}
-				}
+				//if (Console.KeyAvailable)
+				//{
+				//	ConsoleKeyInfo userInput = Console.ReadKey();
+				//	if (userInput.Key == ConsoleKey.LeftArrow)
+				//	{
+				//		if (direction != right) direction = left;
+				//	}
+				//	if (userInput.Key == ConsoleKey.RightArrow)
+				//	{
+				//		if (direction != left) direction = right;
+				//	}
+				//	if (userInput.Key == ConsoleKey.UpArrow)
+				//	{
+				//		if (direction != down) direction = up;
+				//	}
+				//	if (userInput.Key == ConsoleKey.DownArrow)
+				//	{
+				//		if (direction != up) direction = down;
+				//	}
+				//}
 
 				//snakeHead is the last element of snakeElements
 				Position snakeHead = snakeElements.Last();
@@ -394,8 +385,32 @@ namespace Snake
 				{
 					if (Console.KeyAvailable)
 					{
-						ConsoleKeyInfo userInput = Console.ReadKey();
+						ConsoleKeyInfo userInput = new ConsoleKeyInfo();
+						do
+						{
+							if (Console.KeyAvailable == false) { }
 
+							userInput = Console.ReadKey(true);
+							if (userInput.Key == ConsoleKey.LeftArrow)
+							{
+								if (direction != right) direction = left;
+							}
+							if (userInput.Key == ConsoleKey.RightArrow)
+							{
+								if (direction != left) direction = right;
+							}
+							if (userInput.Key == ConsoleKey.DownArrow)
+							{
+								if (direction != up) direction = down;
+							}
+						} while (userInput.Key != ConsoleKey.LeftArrow && userInput.Key != ConsoleKey.RightArrow && userInput.Key != ConsoleKey.DownArrow);
+					}
+					else { }
+				}
+				else {
+					if (Console.KeyAvailable)
+					{
+						ConsoleKeyInfo userInput = new ConsoleKeyInfo();
 						do
 						{
 							if (Console.KeyAvailable == false) { }
@@ -417,35 +432,9 @@ namespace Snake
 							{
 								if (direction != up) direction = down;
 							}
-						} while (userInput.Key != ConsoleKey.LeftArrow && userInput.Key != ConsoleKey.RightArrow && userInput.Key != ConsoleKey.UpArrow && userInput.Key != ConsoleKey.DownArrow);
 
-					}
-					else { }
-				}
-				else {
-					if (Console.KeyAvailable)
-					{
-						ConsoleKeyInfo userInput = Console.ReadKey();
-
-						do
-						{
-							if (Console.KeyAvailable == false) { }
-
-							userInput = Console.ReadKey(true);
-							if (userInput.Key == ConsoleKey.LeftArrow)
-							{
-								if (direction != right) direction = left;
-							}
-							if (userInput.Key == ConsoleKey.RightArrow)
-							{
-								if (direction != left) direction = right;
-							}
-							if (userInput.Key == ConsoleKey.DownArrow)
-							{
-								if (direction != up) direction = down;
-							}
-						} while (userInput.Key != ConsoleKey.LeftArrow && userInput.Key != ConsoleKey.RightArrow && userInput.Key != ConsoleKey.DownArrow);
-
+						} while (userInput.Key != ConsoleKey.LeftArrow && userInput.Key != ConsoleKey.RightArrow &&
+								userInput.Key != ConsoleKey.UpArrow && userInput.Key != ConsoleKey.DownArrow);
 					}
 				}
 				///<summary>
@@ -484,8 +473,11 @@ namespace Snake
 				///<summary>
 				/// Creation of the new food after the snake ate the previous food.
 				/// </summary>
-				if (snakeNewHead.col == food.col && snakeNewHead.row == food.row)
+				if ((snakeNewHead.col == food.col && snakeNewHead.row == food.row) || (snakeNewHead.col == food.col + 1 && snakeNewHead.row == food.row))
 				{
+					Console.SetCursorPosition(food.col, food.row);
+					Console.Write("  ");
+
 					eatenTimes++;
 
 					if (eatenTimes == 2)
@@ -550,7 +542,7 @@ namespace Snake
 					obstacles.Add(obstacle);
 					Console.SetCursorPosition(obstacle.col, obstacle.row);
 					Console.ForegroundColor = ConsoleColor.Cyan;
-					Console.Write("=");
+					Console.Write("▒");
 				}
 				else if (snakeNewHead.col == bonusfood.col && snakeNewHead.row == bonusfood.row)
 				{
@@ -581,7 +573,7 @@ namespace Snake
 					obstacles.Add(obstacle);
 					Console.SetCursorPosition(obstacle.col, obstacle.row);
 					Console.ForegroundColor = ConsoleColor.Cyan;
-					Console.Write("=");
+					Console.Write("▒");
 				}
 				else
 				{
@@ -605,7 +597,7 @@ namespace Snake
 					}
 
 					Console.SetCursorPosition(food.col, food.row);
-					Console.Write(" ");
+					Console.Write("  ");
 					do
 					{
 						food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
