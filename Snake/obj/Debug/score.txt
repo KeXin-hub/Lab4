@@ -1,5 +1,11 @@
 YOU LOSE!
+<<<<<<< HEAD
 Game Level: 2
 Points: -100
 Negative Points: 100
+=======
+Game Level: 1
+Points: -200
+Negative Points: 0
+>>>>>>> add-restart-feature
 Bonus: 0

@@ -7,7 +7,11 @@
   <MonoDevelop.Ide.ItemProperties.Snake PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
+<<<<<<< HEAD
       <File FileName="Program.cs" Line="286" Column="49" />
+=======
+      <File FileName="Program.cs" Line="1" Column="1" />
+>>>>>>> add-restart-feature
       <File FileName="App.config" Line="6" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>

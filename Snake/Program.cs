@@ -165,13 +165,13 @@ namespace Snake
 
 			Console.Clear();
 			scoreBoard();
-			Console.WriteLine("Press ENTER to quit game");
+			//Console.WriteLine("Press ENTER to quit game");
 
-			string action = Console.ReadLine(); //Enter key pressed, exit game
-			if (action == "")
-			{
-				Environment.Exit(0);
-			}
+			//string action = Console.ReadLine(); //Enter key pressed, exit game
+			//if (action == "")
+			//{
+			//	Environment.Exit(0);
+			//}
 		}
 
 		public void winGame(int negativePoints, int eatenTimes, int lvlNum, Queue<Position> snakeElements, int bonus)
@@ -202,13 +202,13 @@ namespace Snake
 
 				Console.Clear();
 				scoreBoard();
-				Console.WriteLine("Press ENTER to quit game");
+				//Console.WriteLine("Press ENTER to quit game");
 
-				string action = Console.ReadLine(); //Enter key pressed, exit game
-				if (action == "")
-				{
-					Environment.Exit(0);
-				}
+				//string action = Console.ReadLine(); //Enter key pressed, exit game
+				//if (action == "")
+				//{
+				//	Environment.Exit(0);
+				//}
 
 			}
 		}
@@ -254,8 +254,7 @@ namespace Snake
 			}
 		}
 
-		//Defines the Main method
-		static void Main(string[] args)
+		public void Game()
 		{
 			///<summary>
 			/// Create variables.
@@ -308,7 +307,7 @@ namespace Snake
 			program.addSnakeElements(snakeElements);
 
 			program.displayLevel(lvlNum);
-			program.displayScore(snakeElements, negativePoints,bonus);
+			program.displayScore(snakeElements, negativePoints, bonus);
 
 			///<summary>
 			/// Set up and draw the food of the snake at random position.
@@ -463,7 +462,7 @@ namespace Snake
 				/// </summary>
 				snakeElements.Enqueue(snakeNewHead);
 				program.displayLevel(lvlNum);
-				program.displayScore(snakeElements, negativePoints,bonus);
+				program.displayScore(snakeElements, negativePoints, bonus);
 
 				Console.SetCursorPosition(snakeNewHead.col, snakeNewHead.row);
 				Console.ForegroundColor = ConsoleColor.Gray;
@@ -581,7 +580,7 @@ namespace Snake
 					Position last = snakeElements.Dequeue();
 					Console.SetCursorPosition(last.col, last.row);
 					Console.Write(" ");
-					program.displayScore(snakeElements, negativePoints,bonus);
+					program.displayScore(snakeElements, negativePoints, bonus);
 				}
 
 				///<summary>
@@ -612,6 +611,25 @@ namespace Snake
 				sleepTime -= 0.01;
 
 				Thread.Sleep((int)sleepTime);
+			}
+		}
+
+		//Defines the Main method
+		static void Main(string[] args)
+		{
+			while (true)
+			{
+				Program game = new Program();
+
+				game.Game();
+
+				Console.WriteLine("Press any key to restart, press Esc to close.");
+				var userInput = Console.ReadKey();
+				if (userInput.Key == ConsoleKey.Escape)
+				{
+					return;
+				}
+				Console.Clear();
 			}
 		}
 
