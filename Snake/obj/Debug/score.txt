@@ -1,5 +1,5 @@
 YOU LOSE!
-Game Level: 2
-Points: 100
-Negative Points: 100
-Bonus: 100
+Game Level: 1
+Points: -200
+Negative Points: 0
+Bonus: 0
