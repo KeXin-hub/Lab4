@@ -9,3 +9,15 @@ Points: -200
 Negative Points: 0
 >>>>>>> add-restart-feature
 Bonus: 0
+YOU LOSE!
+Game Level: 1
+Food Eaten Times: 0
+Points: -200
+Negative Points: 0
+---------------------------------------
+YOU LOSE!
+Game Level: 1
+Food Eaten Times: 1
+Points: -150
+Negative Points: 50
+---------------------------------------
