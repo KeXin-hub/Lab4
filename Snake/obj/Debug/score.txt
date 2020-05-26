@@ -3,3 +3,15 @@ Game Level: 2
 Points: -100
 Negative Points: 100
 Bonus: 0
+YOU LOSE!
+Game Level: 1
+Food Eaten Times: 0
+Points: -200
+Negative Points: 0
+---------------------------------------
+YOU LOSE!
+Game Level: 1
+Food Eaten Times: 1
+Points: -150
+Negative Points: 50
+---------------------------------------

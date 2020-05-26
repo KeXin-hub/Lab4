@@ -137,13 +137,15 @@ namespace Snake
 			Console.WriteLine("Game over!");
 			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
 
-			using (StreamWriter writetext = new StreamWriter("score.txt"))
+			using (FileStream fs = new FileStream("score.txt", FileMode.Append, FileAccess.Write))
+			using (StreamWriter writetext = new StreamWriter(fs))
 			{
 				writetext.WriteLine("YOU LOSE!");
 				writetext.WriteLine("Game Level: " + lvlNum);
+				writetext.WriteLine("Food Eaten Times: " + eatenTimes);
 				writetext.WriteLine("Points: " + userPoints);
 				writetext.WriteLine("Negative Points: " + negativePoints);
-				writetext.WriteLine("Bonus: " + bonus);
+				writetext.WriteLine("---------------------------------------");
 			}
 
 			//if (userPoints < 0) userPoints = 0;
@@ -188,14 +190,15 @@ namespace Snake
 				Console.WriteLine("Press ENTER to display ScoreBoard.");
 				int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
 
-				using (StreamWriter writetext = new StreamWriter("score.txt"))
+				using (FileStream fs = new FileStream("score.txt", FileMode.Append, FileAccess.Write))
+				using (StreamWriter writetext = new StreamWriter(fs))
 				{
 					writetext.WriteLine("YOU WIN!");
 					writetext.WriteLine("Game Level: " + lvlNum);
 					writetext.WriteLine("Food Eaten Times: " + eatenTimes);
 					writetext.WriteLine("Points: " + userPoints);
 					writetext.WriteLine("Negative Points: " + negativePoints);
-					writetext.WriteLine("Bonus: " + bonus);
+					writetext.WriteLine("---------------------------------------");
 				}
 
 				Console.ReadLine();
