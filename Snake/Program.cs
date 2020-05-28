@@ -137,13 +137,15 @@ namespace Snake
 			Console.WriteLine("Game over!");
 			int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
 
-			using (StreamWriter writetext = new StreamWriter("score.txt"))
+			using (FileStream fs = new FileStream("score.txt", FileMode.Append, FileAccess.Write))
+			using (StreamWriter writetext = new StreamWriter(fs))
 			{
 				writetext.WriteLine("YOU LOSE!");
 				writetext.WriteLine("Game Level: " + lvlNum);
+				writetext.WriteLine("Food Eaten Times: " + eatenTimes);
 				writetext.WriteLine("Points: " + userPoints);
 				writetext.WriteLine("Negative Points: " + negativePoints);
-				writetext.WriteLine("Bonus: " + bonus);
+				writetext.WriteLine("---------------------------------------");
 			}
 
 			//if (userPoints < 0) userPoints = 0;
@@ -184,31 +186,34 @@ namespace Snake
 				Console.WriteLine("You Win!");
 				Console.SetCursorPosition(35, 10);
 				Console.WriteLine("Congratulation! You've reached Level 5 & food eaten time is 5");
-				Console.SetCursorPosition(50, 12);
-				Console.WriteLine("Press ENTER to display ScoreBoard.");
 				int userPoints = (snakeElements.Count - 6) * 100 - negativePoints + bonus;
 
-				using (StreamWriter writetext = new StreamWriter("score.txt"))
+				using (FileStream fs = new FileStream("score.txt", FileMode.Append, FileAccess.Write))
+				using (StreamWriter writetext = new StreamWriter(fs))
 				{
 					writetext.WriteLine("YOU WIN!");
 					writetext.WriteLine("Game Level: " + lvlNum);
 					writetext.WriteLine("Food Eaten Times: " + eatenTimes);
 					writetext.WriteLine("Points: " + userPoints);
 					writetext.WriteLine("Negative Points: " + negativePoints);
-					writetext.WriteLine("Bonus: " + bonus);
+					writetext.WriteLine("---------------------------------------");
 				}
 
+				Console.SetCursorPosition(50, 12);
+				Console.WriteLine("Press ENTER to display ScoreBoard.");
 				Console.ReadLine();
+
 
 				Console.Clear();
 				scoreBoard();
 				//Console.WriteLine("Press ENTER to quit game");
+				string action = Console.ReadLine(); //Enter key pressed, exit game
+				if (action == "")
+				{
+					Environment.Exit(0);
+				}
 
-				//string action = Console.ReadLine(); //Enter key pressed, exit game
-				//if (action == "")
-				//{
-				//	Environment.Exit(0);
-				//}
+
 
 			}
 		}
@@ -243,7 +248,7 @@ namespace Snake
 			string lvl = "Level " + lvlNum;
 			Console.Write(lvl);
 		}
-	
+
 		public void createBoundary()
 		{
 			int width = Console.BufferWidth;
@@ -315,7 +320,7 @@ namespace Snake
 			Position food;
 			do
 			{
-				food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+				food = new Position(randomNumbersGenerator.Next(4, Console.WindowHeight),
 									randomNumbersGenerator.Next(4, Console.WindowWidth));
 			}
 			while (snakeElements.Contains(food) || obstacles.Contains(food));
@@ -323,7 +328,7 @@ namespace Snake
 			Position bonusfood;
 			do
 			{
-				bonusfood = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+				bonusfood = new Position(randomNumbersGenerator.Next(4, Console.WindowHeight),
 					randomNumbersGenerator.Next(4, Console.WindowWidth));
 			}
 			while (snakeElements.Contains(bonusfood) || obstacles.Contains(bonusfood));
@@ -486,36 +491,37 @@ namespace Snake
 						foodDissapearTime = 8000;
 					}
 
-					if (eatenTimes == 3)
-					{
-						lvlNum++;
-						program.displayLevel(lvlNum);
-						foodDissapearTime = 7000;
-					}
+					//if (eatenTimes == 3)
+					//{
+					//	lvlNum++;
+					//	program.displayLevel(lvlNum);
+					//	foodDissapearTime = 7000;
+					//}
 
-					if (eatenTimes == 4)
-					{
-						lvlNum++;
-						program.displayLevel(lvlNum);
-						foodDissapearTime = 6000;
-					}
+					//if (eatenTimes == 4)
+					//{
+					//	lvlNum++;
+					//	program.displayLevel(lvlNum);
+					//	foodDissapearTime = 6000;
+					//}
 
-					if (eatenTimes == 5)
-					{
-						lvlNum++;
-						program.displayLevel(lvlNum);
-					}
+					//if (eatenTimes == 5)
+					//{
+					//	lvlNum++;
+					//	program.displayLevel(lvlNum);
+					//}
 
 					// feeding the snake
 					//find new position for food
 					do
 					{
-						food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+						food = new Position(randomNumbersGenerator.Next(4, Console.WindowHeight),
 							randomNumbersGenerator.Next(4, Console.WindowWidth));
 					}
 					while (snakeElements.Contains(food) || obstacles.Contains(food));
 
 					program.winGame(negativePoints, eatenTimes, lvlNum, snakeElements, bonus);
+
 
 					program.drawFood(food);
 					program.drawSpecialFood(bonusfood, randomNumbersGenerator, eatenTimes);
@@ -548,6 +554,25 @@ namespace Snake
 					eatenTimes++;
 					bonus += 100;
 
+					if (eatenTimes == 3)
+					{
+						lvlNum++;
+						program.displayLevel(lvlNum);
+						foodDissapearTime = 7000;
+					}
+
+					if (eatenTimes == 4)
+					{
+						lvlNum++;
+						program.displayLevel(lvlNum);
+						foodDissapearTime = 6000;
+					}
+
+					if (eatenTimes == 5)
+					{
+						lvlNum++;
+						program.displayLevel(lvlNum);
+					}
 					//program.winGame(negativePoints, eatenTimes, snakeElements, bonus);
 
 					lastFoodTime = Environment.TickCount;
@@ -593,13 +618,18 @@ namespace Snake
 					if (negativePoints >= 200)
 					{
 						program.gameOver(snakeElements, negativePoints, lvlNum, foodDissapearTime, eatenTimes, bonus);
+						string action = Console.ReadLine(); //Enter key pressed, exit game
+						if (action == "")
+						{
+							return;
+						}
 					}
 
 					Console.SetCursorPosition(food.col, food.row);
 					Console.Write("  ");
 					do
 					{
-						food = new Position(randomNumbersGenerator.Next(0, Console.WindowHeight),
+						food = new Position(randomNumbersGenerator.Next(4, Console.WindowHeight),
 							randomNumbersGenerator.Next(4, Console.WindowWidth));
 					}
 					while (snakeElements.Contains(food) || obstacles.Contains(food));
@@ -627,7 +657,8 @@ namespace Snake
 				var userInput = Console.ReadKey();
 				if (userInput.Key == ConsoleKey.Escape)
 				{
-					return;
+					//return;
+					Environment.Exit(0);
 				}
 				Console.Clear();
 			}
